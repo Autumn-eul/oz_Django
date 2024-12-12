@@ -4,7 +4,7 @@ from .models import User
 class MyInfoUserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ["id", "username", "email"]
 
 class FeedUserSerializer(ModelSerializer):
     class Meta:

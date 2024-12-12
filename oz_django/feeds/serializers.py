@@ -1,9 +1,11 @@
 from rest_framework.serializers import ModelSerializer
 from .models import Feed
 from users.serializers import FeedUserSerializer
+from reviews.serializers import ReviewSerializer
 
 class FeedSerializer(ModelSerializer):
-    user = FeedUserSerializer()
+    user = FeedUserSerializer(read_only = True)
+    review_set = ReviewSerializer(many = True, read_only = True)
     class Meta:
         model = Feed # 직렬화 하고싶다
         fields = "__all__" # Feed 라는 모델에 있는 전체 fields 를 직렬화 하길 원한다
