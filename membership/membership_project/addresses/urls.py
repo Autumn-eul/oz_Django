@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path("", views.AddressList.as_view(), name = "address_list"),
@@ -7,4 +8,5 @@ urlpatterns = [
     path("create/<int:user_id>/", views.CreateAddress.as_view(), name = "create_address"),
     path("update/<int:address_id>/", views.UpdateAddress.as_view(), name = "update_address"),
     path("delete/<int:address_id>/", views.DeleteAddress.as_view(), name = "delete_address"),
+    path("getToken", obtain_auth_token),
 ]
