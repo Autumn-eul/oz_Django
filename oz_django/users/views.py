@@ -4,10 +4,13 @@ from rest_framework.exceptions import NotFound, ParseError
 from .serializers import ModelSerializer, MyInfoUserSerializer
 from django.contrib.auth.password_validation import validate_password
 
+from rest_framework.authentication import TokenAuthentication # 사용자 인증
+from rest_framework.permissions import IsAuthenticated # 권한 부여
+
 # api/v1/users [POST] => 유저 생성 API
 class Users(APIView):
     def post(self, request):
-        # passowrd -> 검증을 해야하고, 해시화 해서 저장 필요
+        # password -> 검증을 해야하고, 해시화 해서 저장 필요
         # the other -> 비밀번호 외 다른 데이터들
 
         password = request.data.get('password')
@@ -31,6 +34,9 @@ class Users(APIView):
 
 # api/v1/users/myinfo [GET, PUT]
 class MyInfo(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         user = request.user
         serializer = MyInfoUserSerializer(user)
@@ -42,7 +48,7 @@ class MyInfo(APIView):
         serializer = MyInfoUserSerializer(user, data = request.data, partial = True)
 
         if serializer.is_valid():
-            user= serializer.save()
+            user = serializer.save()
             serializer = MyInfoUserSerializer(user)
             return Response(serializer.data)
         else:
