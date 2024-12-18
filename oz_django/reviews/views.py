@@ -16,7 +16,7 @@ class Reviews(APIView):
 class ReviewDetail(APIView):
     def get(self, request, review_id):
         try:
-            review = Review.objects.get(id=review_id)
+            review = Review.objects.get(id = review_id)
         except:
             raise NotFound
 
