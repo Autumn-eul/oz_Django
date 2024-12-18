@@ -41,7 +41,10 @@ class CreateAddress(APIView):
         except User.DoesNotExist:
             raise NotFound
 
-        serializer = AddressSerializer(data = request.data)
+        data = request.data.copy() # 데이터 복사 후 수정
+        data["user"] = user.id # user 필드 추가
+        serializer = AddressSerializer(data = data)
+
         if serializer.is_valid():
             serializer.save(user = user)
             return Response(serializer.data, status = status.HTTP_201_CREATED)
